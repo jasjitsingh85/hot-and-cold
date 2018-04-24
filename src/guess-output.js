@@ -9,7 +9,3 @@ export default function GuessOutput(props) {
 			</div>
 		)
 }
-
-GuessOutput.defaultProps = {
-	text : "Make your Guess"
-}
