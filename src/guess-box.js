@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import './guess-box.css';
 import GuessOutput from './guess-output.js'
 import GuessInput from './guess-input.js'
+import {connect} from 'react-redux';
+import {setGameValue} from './actions';
+import store from './store';
 
-export default class GuessBox extends Component {
+export class GuessBox extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			text : "Make your Guess",
-			randomNumber : this.generateRandomNumber()
 		}
+
+		this.props.dispatch(setGameValue(this.generateRandomNumber()));
 	}
 
 	generateRandomNumber() {
@@ -17,7 +21,10 @@ export default class GuessBox extends Component {
 	}
 
 	madeGuess(guess) {
-		let difference = Math.abs(this.state.randomNumber - guess);
+		let randomNumber = store.getState().game_value;
+		let guesses_array = store.getState().guesses;
+		let last_guess = guesses_array[guesses_array.length - 1];
+		let difference = Math.abs(randomNumber - last_guess);
 		if (difference === 0) {
 			this.setState({ text : "You guessed correctly!"});
 		} else if (difference > 0 && difference < 20) {
@@ -44,3 +51,5 @@ export default class GuessBox extends Component {
 GuessBox.defaultProps = {
     title: 'HOT or COLD'
 };
+
+export default connect()(GuessBox);

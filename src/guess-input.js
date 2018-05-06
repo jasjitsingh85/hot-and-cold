@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import './guess-input.css';
+import {connect} from 'react-redux';
+import {addGuess} from './actions';
+import store from './store';
 
-export default class GuessInput extends Component {
+export class GuessInput extends Component {
 	constructor(props) {
 		super(props);
 	}
 
 	onSubmit (event) {
 		event.preventDefault();
-		this.props.onSubmit(this.textInput.value);
+		this.props.dispatch(addGuess(this.textInput.value));
+		this.props.onSubmit(null);
+		console.log(store.getState().game_value);
 	}
 
 	render() {
@@ -21,3 +26,6 @@ export default class GuessInput extends Component {
 	}
 
 }
+
+
+export default connect()(GuessInput);
